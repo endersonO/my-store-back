@@ -1,6 +1,8 @@
 const faker = require('faker');
 const boom = require('@hapi/boom');
 
+const sequelize = require('../libs/sequelize');
+
 class ProductServices {
   constructor() {
     this.products = [];
@@ -31,11 +33,12 @@ class ProductServices {
   }
 
   async find() {
-    return new Promise((resolve, reject) => {
-      setTimeout(() => {
-        resolve(this.products);
-      }, 5000);
-    });
+    const query = 'SELECT * FROM tasks';
+    const [data] = await sequelize.query(query);
+    console.log(data)
+    return {
+      data
+    };
   }
 
   async findOne(id) {
@@ -43,8 +46,8 @@ class ProductServices {
     if (!product) {
       throw boom.notFound('product not found');
     }
-    if(product.isBlock){
-      throw boom.conflict('Product is block')
+    if (product.isBlock) {
+      throw boom.conflict('Product is block');
     }
     return product;
   }
