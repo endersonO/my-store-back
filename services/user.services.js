@@ -40,12 +40,10 @@ class UserServices {
 
   async update(id, changes) {
     const user = await models.User.findByPk(id);
-    console.log('servicio updates')
     //const user = await this.findOne(id);
     if(!user){
       throw boom.notFound('User not found');
     }
-    console.log('objeto usuario',user);
     const rta = await user.update(changes);
     //const user = await models.User.update(user);
     return { rta };
