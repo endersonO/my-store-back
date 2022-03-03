@@ -10,7 +10,7 @@ const {
 const router = express.Router();
 const service = new ProductService();
 
-router.get('/', async (req, res) => {
+router.get('/', async (req, res,) => {
   const products = await service.find();
   res.json(products);
 });
@@ -21,7 +21,7 @@ router.get('/filter', async (req, res) => {
 
 router.get(
   '/:id',
-  //validatorHandler(getProductSchema, 'params'),
+  validatorHandler(getProductSchema, 'params'),
   async (req, res, next) => {
     try {
       const { id } = req.params;
