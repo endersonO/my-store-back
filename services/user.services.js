@@ -3,7 +3,7 @@ const boom = require('@hapi/boom');
 //const getConnection = require('../libs/postgres');
 const pool = require('../libs/postgres.pool');
 const { models } = require('./../libs/sequelize')
-
+const bcrypt = require('bcrypt')
 
 class UserServices {
   constructor() {
@@ -12,14 +12,29 @@ class UserServices {
   }
 
   async create(data) {
-    const newUser = await models.User.create(data);
+    const hash = await bcrypt.hash(data.password, 10)
+    const newUser = await models.User.create({
+      ...data,
+      password: hash
+    });
+    delete newUser.dataValues.password;// al usar sequlize los datos se almacenan en ese lugar
     return newUser;
   }
 
   async find() {
-    const rta = await models.User.findAll();
+    const rta = await models.User.findAll({
+      include: ['customer']
+    });
     return rta;
   }
+
+  async findByEmail(email) {
+    const rta = await models.User.findOne({
+      where: { email }
+    });
+    return rta;
+  }
+
 
   async findOne(id) {
     const user = await models.User.findByPk(id);

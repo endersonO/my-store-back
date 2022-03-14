@@ -52,11 +52,13 @@ class ProductServices {
     }
 
     const products = await models.Product.findAll(options);
+    console.log(products)
     return products;
   }
 
   async findOne(id) {
-    const product = this.model.Product.findByPk(id);
+    const product = await models.Product.findByPk(id);
+    console.log(product)
     if (!product) {
       throw boom.notFound('Customer not found');
     }

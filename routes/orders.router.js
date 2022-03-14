@@ -1,11 +1,12 @@
 const express = require('express');
+const passport = require('passport');
 
-const OrderService = require('./../services/order.services')
-const validatorHandler = require('../middlewares/validator.handler')
-const { getOrderSchema, createOrderSchema, addItemSchema } = require('./../schemas/order.schema')
+const OrderService = require('./../services/order.services');
+const validatorHandler = require('../middlewares/validator.handler');
+const { getOrderSchema, createOrderSchema, addItemSchema } = require('./../schemas/order.schema');
 
 const router = express.Router();
-const service = new OrderService
+const service = new OrderService();
 
 router.get('/',
   async (req, res, next) => {
@@ -32,10 +33,12 @@ router.get('/:id',
 )
 
 router.post('/add-item',
-  validatorHandler(addItemSchema, 'body'),
+  // validatorHandler(addItemSchema, 'body'),
+  passport.authenticate('jwt', {session: false}),
   async (req, res, next) => {
     try {
       const body = req.body;
+      await service.orderOwner(req);
       const newItem = await service.addItem(body);
       res.status(201).json(newItem);
     } catch (error) {
@@ -44,11 +47,12 @@ router.post('/add-item',
 })
 
 router.post('/',
-  validatorHandler(createOrderSchema, 'body'),
+  //validatorHandler(createOrderSchema, 'body'),
+  passport.authenticate('jwt', {session: false}),
   async (req, res, next) => {
     try {
-      const body = req.body;
-      const newOrder = await service.create(body);
+      const user = req.user
+      const newOrder = await service.create(user);
       res.status(201).json(newOrder);
     } catch (error) {
       next(error);
