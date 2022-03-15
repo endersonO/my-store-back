@@ -15,15 +15,6 @@ class OrderService {
         'items',
       ],
     });
-    const Order = await models.Order.findByPk(2, {
-      include: [
-        {
-          association: 'customer',
-          include: ['user'],
-        },
-        'items',
-      ],
-    });
     return Orders;
   }
 
