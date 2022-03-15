@@ -43,7 +43,6 @@ class OrderService {
     return newItem;
   }
   async orderOwner(data){
-    console.log(data)
     const customer = await models.Customer.findOne({
       where: {
         '$user.id$': data.user.sub
@@ -52,10 +51,8 @@ class OrderService {
     });
     const order = await models.Customer.findByPk(5);
     if(customer.dataValues.userId !== order.dataValues.userId){
-      console.log('no es dueño')
       throw boom.unauthorized('User is not owner')
     }
-    console.log('dueño')
     return
   }
 
