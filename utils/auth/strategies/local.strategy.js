@@ -8,6 +8,7 @@ const LocalStrategy = new Strategy({
     passwordField: 'password'
   },
   async (email, password, done) => {
+    console.log("local strategy")
     try {
       const user = await service.getUser(email, password);
       done(null, user);
