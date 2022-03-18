@@ -1,7 +1,9 @@
 const express = require('express');
 const routerApi = require('./routes');
 const cors = require('cors');
-const { checkApiKey } = require('./middlewares/auth.handler')
+const { checkApiKey } = require('./middlewares/auth.handler');
+const swaggerUi = require('swagger-ui-express');
+const swaggerDocs = require('./swagger-output.json');
 
 const {
   logErrors,
@@ -15,7 +17,7 @@ const port = process.env.PORT || 3000;
 
 app.use(express.json());
 
-const whitelist = ['http://localhost:8080', 'http://myapp.ve'];
+const whitelist = ['http://localhost:8080', 'http://myapp.ve', 'http://localhost:3000'];
 const options = {
   origin: (origin, callback) => {
     if (whitelist.includes(origin) || !origin) {
@@ -27,7 +29,11 @@ const options = {
 };
 app.use(cors(options));
 
-require('./utils/auth')
+require('./utils/auth');
+app.use('/v1/api-docs',
+  swaggerUi.serve,
+  swaggerUi.setup(swaggerDocs,{ swaggerOptions: { persistAuthorization: true } })
+);
 
 app.get('/', (req, res) => {
   res.send('hola mi server en express');
