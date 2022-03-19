@@ -41,7 +41,7 @@ router.post(
   validatorHandler(createUserSchema, 'body'),
   async (req, res, next) => {
     // #swagger.tags = ['User']
-    // #swagger.description: "This route permit create a new user",
+    // #swagger.description= "This route permit create a new user",
     /* #swagger.parameters['User Information'] = {
         in: 'body',
         description: '',
