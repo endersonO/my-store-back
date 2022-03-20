@@ -12,6 +12,17 @@ services:
     volumes:
       - "./postgres_data:/var/lib/postgresql/data"
 
+  postgresTest:
+    image: postgres:13
+    environment:
+      - POSTGRES_DB=my_store_test
+      - POSTGRES_USER=end
+      - POSTGRES_PASSWORD=admin123
+    ports:
+      - "5433:5432"
+    volumes:
+      - "./postgres_data:/var/lib/postgresql/data"
+
   pgadmin:
     image: dpage/pgadmin4
     environment:

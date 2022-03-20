@@ -1,10 +1,43 @@
 'use strict';
 
-const { UserSchema, USER_TABLE } = require('./../models/user.model');
+const { USER_TABLE } = require('./../models/user.model');
 
 module.exports = {
-  up: async (queryInterface) => {
-    await queryInterface.createTable(USER_TABLE, UserSchema);
+  up: async (queryInterface, Sequelize) => {
+    await queryInterface.createTable(USER_TABLE,  {
+    id: {
+      allowNull: false,
+      autoIncrement: true,
+      primaryKey: true,
+      type: Sequelize.DataTypes.INTEGER
+    },
+    email: {
+      allowNull: false,
+      type: Sequelize.DataTypes.STRING,
+      unique: true,
+    },
+    password: {
+      allowNull: false,
+      type: Sequelize.DataTypes.STRING
+    },
+    recoveryToken: {
+      field: 'recovery_token',
+      allowNull: true,
+      type: Sequelize.DataTypes.STRING
+    },
+    role: {
+      allowNull: false,
+      type: Sequelize.DataTypes.STRING,
+      defaultValue: 'customer'
+    },
+    createdAt: {
+      allowNull: false,
+      type: Sequelize.DataTypes.DATE,
+      field: 'create_at',
+      defaultValue: Sequelize.NOW
+    }
+  })
+
   },
 
   down: async (queryInterface) => {

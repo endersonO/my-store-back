@@ -4,13 +4,18 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "dev": "nodemon index.js",
+    "dev": "NODE_DEV=dev nodemon index.js",
     "start": "node index.js",
     "lint": "eslint",
     "migrations:generate": "sequelize-cli migration:generate --name",
-    "migrations:run": "sequelize-cli db:migrate",
+    "migrations:run": "NODE_ENV=development sequelize-cli db:migrate",
+    "migrations:run:test": "sequelize-cli db:migrate --env test",
     "migrations:revert": "sequelize-cli db:migrate:undo",
-    "swagger-autogen": "node ./swagger.js"
+    "migrations:revert:test": "sequelize-cli db:migrate:undo --env test",
+    "migrations:revert:test:hard": "sequelize-cli db:migrate:undo:all --env test",
+    "swagger-autogen": "node ./swagger.js",
+    "test": "jest --verbose --silent",
+    "test:watch": "npm run test -- --watch"
   },
   "keywords": [],
   "author": "",
@@ -21,7 +26,8 @@
     "eslint-plugin-prettier": "^4.0.0",
     "jest": "^27.5.1",
     "nodemon": "^2.0.15",
-    "prettier": "^2.5.1"
+    "prettier": "^2.5.1",
+    "supertest": "^6.2.2"
   },
   "dependencies": {
     "@hapi/boom": "^9.1.4",
@@ -48,5 +54,13 @@
   },
   "engines": {
     "node": "16.x"
+  },
+  "jest": {
+    "testEnvironment": "node",
+    "coveragePathIgnorePatterns": [
+      "node_modules",
+      "mysql_data",
+      "postgres_data"
+    ]
   }
 }

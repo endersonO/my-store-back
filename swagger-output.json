@@ -40,7 +40,7 @@
         "tags": [
           "User"
         ],
-        "description": "",
+        "description": "This route permit create a new user",
         "parameters": [
           {
             "name": "User Information",
@@ -236,7 +236,10 @@
     },
     "/categories/": {
       "get": {
-        "description": "",
+        "tags": [
+          "Category"
+        ],
+        "description": "this method get all categories",
         "parameters": [],
         "responses": {
           "200": {
@@ -245,8 +248,39 @@
         }
       },
       "post": {
-        "description": "",
-        "parameters": [],
+        "tags": [
+          "Category"
+        ],
+        "description": "this method create new categories only admin can create",
+        "parameters": [
+          {
+            "name": "Authorization",
+            "in": "header",
+            "description": "token bearer in header",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "Category Information",
+            "in": "body",
+            "description": "this required email and password",
+            "schema": {
+              "required": [
+                "category information"
+              ],
+              "properties": {
+                "name": {
+                  "type": "string",
+                  "example": "category 1"
+                },
+                "image": {
+                  "type": "string",
+                  "example": "http://placeimg.com/640/480"
+                }
+              }
+            }
+          }
+        ],
         "responses": {
           "201": {
             "description": "Created"
@@ -256,7 +290,10 @@
     },
     "/categories/{id}": {
       "get": {
-        "description": "",
+        "tags": [
+          "Category"
+        ],
+        "description": "this method get one category with all product information",
         "parameters": [
           {
             "name": "id",
@@ -272,13 +309,43 @@
         }
       },
       "patch": {
-        "description": "",
+        "tags": [
+          "Category"
+        ],
+        "description": "this method update fields categories only admin can update",
         "parameters": [
           {
             "name": "id",
             "in": "path",
             "required": true,
             "type": "string"
+          },
+          {
+            "name": "Authorization",
+            "in": "header",
+            "description": "token bearer in header",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "Category Information",
+            "in": "body",
+            "description": "this required optional fields like name or url",
+            "schema": {
+              "required": [
+                "category information"
+              ],
+              "properties": {
+                "name": {
+                  "type": "string",
+                  "example": "category 1"
+                },
+                "image": {
+                  "type": "string",
+                  "example": "http://placeimg.com/640/480"
+                }
+              }
+            }
           }
         ],
         "responses": {
@@ -288,11 +355,21 @@
         }
       },
       "delete": {
-        "description": "",
+        "tags": [
+          "Category"
+        ],
+        "description": "this method delete category field",
         "parameters": [
           {
             "name": "id",
             "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "Authorization",
+            "in": "header",
+            "description": "token bearer in header",
             "required": true,
             "type": "string"
           }
@@ -409,8 +486,32 @@
     },
     "/auth/login": {
       "post": {
-        "description": "",
-        "parameters": [],
+        "tags": [
+          "Auth"
+        ],
+        "description": "this method permit to user log",
+        "parameters": [
+          {
+            "name": "Access Information",
+            "in": "body",
+            "description": "this required email and password",
+            "schema": {
+              "required": [
+                "User"
+              ],
+              "properties": {
+                "email": {
+                  "type": "string",
+                  "example": "example@mail.com"
+                },
+                "password": {
+                  "type": "string",
+                  "example": "ax12XSA&ads"
+                }
+              }
+            }
+          }
+        ],
         "responses": {
           "200": {
             "description": "OK"
@@ -420,16 +521,23 @@
     },
     "/auth/recovery": {
       "post": {
-        "description": "",
+        "tags": [
+          "Auth"
+        ],
+        "description": "this method permit to user reset password, sending an email with recovery link",
         "parameters": [
           {
-            "name": "body",
+            "name": "User email",
             "in": "body",
+            "description": "this required User email",
             "schema": {
-              "type": "object",
+              "required": [
+                "User"
+              ],
               "properties": {
                 "email": {
-                  "example": "any"
+                  "type": "string",
+                  "example": "example@mail.com"
                 }
               }
             }
@@ -444,19 +552,27 @@
     },
     "/auth/change-password": {
       "post": {
-        "description": "",
+        "tags": [
+          "Auth"
+        ],
+        "description": "this method changed user password",
         "parameters": [
           {
-            "name": "body",
+            "name": "Password Information",
             "in": "body",
+            "description": "required temporal and unique use bearer token and new password",
             "schema": {
-              "type": "object",
+              "required": [
+                "User"
+              ],
               "properties": {
-                "token": {
-                  "example": "any"
-                },
                 "newPassword": {
-                  "example": "any"
+                  "type": "string",
+                  "example": "ax12XSA&ads"
+                },
+                "token": {
+                  "type": "string",
+                  "example": "aisdiuadsunu9da.d9ina9ndasnd.u21be7dass"
                 }
               }
             }
@@ -479,21 +595,12 @@
           {
             "name": "Authorization",
             "in": "header",
-            "description": "token header",
+            "description": "token bearer in header",
             "required": true,
             "type": "string"
           }
         ],
-        "responses": {
-          "200": {
-            "description": "OK"
-          }
-        },
-        "security": [
-          {
-            "bearerAuth": []
-          }
-        ]
+        "responses": {}
       }
     }
   }
