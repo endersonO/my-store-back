@@ -29,7 +29,6 @@ router.post('/login',
         }
       } */
     try {
-      console.log("router login");
       const user = req.user;
       res.json(service.signToken(user));
     } catch (error) {

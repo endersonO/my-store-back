@@ -14,7 +14,7 @@
     "migrations:revert:test": "sequelize-cli db:migrate:undo --env test",
     "migrations:revert:test:hard": "sequelize-cli db:migrate:undo:all --env test",
     "swagger-autogen": "node ./swagger.js",
-    "test": "jest --verbose --silent",
+    "test": "jest --verbose --detectOpenHandles",
     "test:watch": "npm run test -- --watch"
   },
   "keywords": [],

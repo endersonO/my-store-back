@@ -7,7 +7,13 @@ class CustomerServices {
 
   async find() {
     const customers = await models.Customer.findAll({
-      include: ['user']
+      include: [{
+        model:models.User,
+        as:'user',
+        attributes: {exclude: ['createdAt', 'password', 'recoveryToken']}
+      }],
+      attributes: {exclude: ['createdAt']},
+      order: [['id','DESC']]
     });
     return customers;
   }
@@ -33,6 +39,9 @@ class CustomerServices {
       include: ['user']
     });
     delete newCustomers.dataValues.user.dataValues.password;
+    delete newCustomers.dataValues.user.dataValues.recoveryToken;
+    delete newCustomers.dataValues.user.dataValues.createdAt;
+    delete newCustomers.dataValues.createdAt;
     return newCustomers;
   }
 

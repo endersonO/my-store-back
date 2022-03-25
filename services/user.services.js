@@ -18,6 +18,9 @@ class UserServices {
       password: hash
     });
     delete newUser.dataValues.password;// al usar sequlize los datos se almacenan en ese lugar
+    delete newUser.dataValues.createdAt;
+    delete newUser.dataValues.recoveryToken;
+
     return newUser;
     /* const newUser = await models.User.create(data);
     return newUser */
@@ -25,8 +28,11 @@ class UserServices {
 
   async find() {
     const rta = await models.User.findAll({
-      include: ['customer']
+      include: ['customer'],
+      attributes: {exclude: ['password', 'createdAt', 'recoveryToken']},
+      order: [['id','DESC']]
     });
+    //delete rta.dataValues.password;
     return rta;
   }
 
@@ -43,6 +49,10 @@ class UserServices {
     if(!user){
       throw boom.notFound('User not found');
     }
+
+    delete user.dataValues.password;// al usar sequlize los datos se almacenan en ese lugar
+    delete user.dataValues.createdAt;
+    delete user.dataValues.recoveryToken;
     return user;
     /* const query = 'SELECT * FROM tasks WHERE id = ' + id.toString();
     const rta = await this.pool.query(query);
@@ -62,8 +72,11 @@ class UserServices {
       throw boom.notFound('User not found');
     }
     const rta = await user.update(changes);
+    delete rta.dataValues.password;// al usar sequlize los datos se almacenan en ese lugar
+    delete rta.dataValues.createdAt;
+    delete rta.dataValues.recoveryToken;
     //const user = await models.User.update(user);
-    return { rta };
+    return rta ;
   }
 
   async delete(id) {

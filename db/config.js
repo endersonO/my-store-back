@@ -6,7 +6,7 @@ module.exports = {
     dialect: 'postgres',
   },
   test: {
-    url: config.dbUrlTest,
+    url: config.dbUrl,
     dialect: 'postgres',
   },
   production: {

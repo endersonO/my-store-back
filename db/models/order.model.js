@@ -1,7 +1,7 @@
 const { Model, DataTypes, Sequelize } = require('sequelize')
 
 const { CUSTOMER_TABLE }= require('./../models/customer.model')
-const ORDER_TABLE = 'Orders';
+const ORDER_TABLE = 'orders';
 
 const OrderSchema = {
   id: {
